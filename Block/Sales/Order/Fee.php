@@ -108,15 +108,13 @@ class Fee extends \Magento\Framework\View\Element\Template
                 [
                     'code' => 'fee',
                     'strong' => false,
-                    'value' => 100,
-                    //'value' => $this->_source->getFee(),
-                    'label' => __('Fee'),
+                    'value' => $this->_order->getTotalsFee(),
+                    'label' => __('Product Fee'),
                 ]
             );
 
             $parent->addTotal($fee, 'fee');
            // $this->_addTax('grand_total');
-            $parent->addTotal($fee, 'fee');
 
 
             return $this;

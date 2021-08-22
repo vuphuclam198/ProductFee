@@ -1,6 +1,8 @@
 <?php
 namespace AHT\ProductFee\Model\Total;
 
+use Laminas\Console\Prompt\Number;
+
 class Fee extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
 {
    /**
@@ -13,30 +15,52 @@ class Fee extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
      */
     protected $quoteValidator = null; 
 
-    public function __construct(\Magento\Quote\Model\QuoteValidator $quoteValidator)
+    /**
+     * @param \Magento\Catalog\Model\ResourceModel\ProductFactory
+     */
+    private $_productFactory;
+
+    public function __construct(\Magento\Quote\Model\QuoteValidator $quoteValidator,
+        \Magento\Catalog\Model\ProductFactory $productFactory)
     {
         $this->quoteValidator = $quoteValidator;
+        $this->_productFactory = $productFactory;
     }
   public function collect(
         \Magento\Quote\Model\Quote $quote,
         \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment,
         \Magento\Quote\Model\Quote\Address\Total $total
     ) {
+        
+        $items = $shippingAssignment->getItems();
+        if (!count($items)) {
+            return $this;
+        }
+
         parent::collect($quote, $shippingAssignment, $total);
 
+      $quoteItem =  $quote->getAllVisibleItems();
+      $sum = 0;
+      
+      foreach ($quoteItem as $key => $value) {
+         $productId = $value->getProductId();
+         $product = $this->_productFactory->create()->load($productId);
+         $productFee = $product->getProductFee();
+         $sum += $productFee;
+      }
 
-        $exist_amount = 0; //$quote->getFee(); 
-        $fee = 100; //Excellence_Fee_Model_Fee::getFee();
-        $balance = $fee - $exist_amount;
+    //   $exist_amount = 0; //$quote->getFee(); 
+    //     $fee = 99; //Excellence_Fee_Model_Fee::getFee();
+        $quote->setTotalsFee($sum);
+        $balance = $sum;
 
         $total->setTotalAmount('fee', $balance);
         $total->setBaseTotalAmount('fee', $balance);
-
         $total->setFee($balance);
         $total->setBaseFee($balance);
 
-        $total->setGrandTotal($total->getGrandTotal() + $balance);
-        $total->setBaseGrandTotal($total->getBaseGrandTotal() + $balance);
+        // $total->setGrandTotal($total->getGrandTotal() + $balance);
+        $total->setBaseGrandTotal($total->getBaseGrandTotal() );
 
 
         return $this;
@@ -70,10 +94,19 @@ class Fee extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
      */
     public function fetch(\Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total)
     {
+        $quoteItem =  $quote->getAllVisibleItems();
+        $sum = 0;
+        foreach ($quoteItem as $key => $value) {
+           $productId = $value->getProductId();
+           $product = $this->_productFactory->create()->load($productId);
+           $productFee = $product->getProductFee();
+          $sum += $productFee;
+        }
+        
         return [
             'code' => 'fee',
             'title' => 'Fee',
-            'value' => 100
+            'value' => $sum
         ];
     }
 

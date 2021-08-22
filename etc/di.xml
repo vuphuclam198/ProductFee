@@ -9,5 +9,8 @@
     <type name="Magento\Checkout\Model\DefaultConfigProvider">
         <plugin name="show-extra-attribute-checkout-summary-product" type="AHT\ProductFee\Plugin\Checkout\Model\Defaultconfigprovider" />
     </type>
- 
+    
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <plugin name="sales_invoice_additional_columns" type="AHT\ProductFee\Plugin\SalesInvoiceGridCollection" sortOrder="10" disabled="false" />
+    </type>
 </config>

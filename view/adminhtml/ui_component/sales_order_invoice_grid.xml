@@ -1,0 +1,12 @@
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="sales_order_invoice_columns">
+        <column name="">
+            <settings>
+                <label translate="true">Total Fee</label>
+                <visible>true</visible>
+                <filter>text</filter>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+    </columns>
+</listing>

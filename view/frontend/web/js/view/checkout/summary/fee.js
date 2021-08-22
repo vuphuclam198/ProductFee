@@ -33,7 +33,7 @@ define(
             getBaseValue: function() {
                 var price = 0;
                 if (this.totals()) {
-                    price = this.totals().base_fee;
+                    price = this.totals().base_product_fee;
                 }
                 return priceUtils.formatPrice(price, quote.getBasePriceFormat());
             }
