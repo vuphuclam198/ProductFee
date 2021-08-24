@@ -100,7 +100,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
 
         <td class="col fee">
             <?php if (!empty($attvalue)) :?>
-                <p class="price"><?='$' . $attvalue; ?></p>
+                <p class="price"><?= $this->helper('Magento\Framework\Pricing\Helper\Data')->currency(number_format($attvalue,2),true,false); ?></p>
             <?php else :?>
                 <p class="price">$ 0</p>
             <?php endif; ?>

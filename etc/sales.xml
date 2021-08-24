@@ -6,4 +6,16 @@
             <item name="fee" instance="AHT\ProductFee\Model\Total\Fee" sort_order="150"/>
         </group>  
     </section>
+
+     <section name="order_invoice">
+        <group name="totals">
+            <item name="fee" instance="AHT\ProductFee\Model\Invoice\Total\Fee" sort_order="160"/>
+        </group>
+    </section>
+
+    <section name="order_creditmemo">
+        <group name="totals">
+            <item name="fee" instance="AHT\ProductFee\Model\Creditmemo\Total\Fee" sort_order="170"/>
+        </group>
+    </section>
 </config>

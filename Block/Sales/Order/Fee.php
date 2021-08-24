@@ -114,7 +114,7 @@ class Fee extends \Magento\Framework\View\Element\Template
             );
 
             $parent->addTotal($fee, 'fee');
-           // $this->_addTax('grand_total');
+        //    $this->_addTax('grand_total');
 
 
             return $this;
